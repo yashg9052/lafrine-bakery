@@ -1,0 +1,256 @@
+{
+  "info": {
+    "name": "La Farine Artisan Bakery API",
+    "description": "Complete API collection for testing all endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "health"]
+        }
+      }
+    },
+    {
+      "name": "Menu",
+      "item": [
+        {
+          "name": "Get All Menu Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/menu",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "menu"]
+            }
+          }
+        },
+        {
+          "name": "Get Menu - Bread Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/menu?cat=bread",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "menu"],
+              "query": [{"key": "cat", "value": "bread"}]
+            }
+          }
+        },
+        {
+          "name": "Get Menu - Pastry Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/menu?cat=pastry",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "menu"],
+              "query": [{"key": "cat", "value": "pastry"}]
+            }
+          }
+        },
+        {
+          "name": "Add Menu Item",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Croissant au Jambon\",\n  \"cat\": \"pastry\",\n  \"price\": 160,\n  \"tag\": \"new\",\n  \"desc\": \"Ham and cheese filled buttery croissant\",\n  \"image\": \"https://images.unsplash.com/photo-1555507036-ab1f4038808a\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/menu",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "menu"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sale Items",
+      "item": [
+        {
+          "name": "Get Sale Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/sale",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "sale"]
+            }
+          }
+        },
+        {
+          "name": "Create Sale Item",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chocolate Eclair Bundle\",\n  \"originalPrice\": 450,\n  \"salePrice\": 200,\n  \"image\": \"https://images.unsplash.com/photo-1612203985729-70726954388c\",\n  \"expiresAt\": {{currentTimestamp + 3600000}},\n  \"quantity\": 5,\n  \"reason\": \"Cancelled order - Flash sale!\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/sale",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "sale"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Place Order",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer\": {\n    \"name\": \"John Doe\",\n    \"phone\": \"+91-9876543210\",\n    \"email\": \"john@example.com\"\n  },\n  \"items\": [\n    { \"itemId\": \"1\", \"name\": \"Sourdough Loaf\", \"price\": 280 },\n    { \"itemId\": \"4\", \"name\": \"Butter Croissant\", \"price\": 120 }\n  ],\n  \"orderType\": \"pickup\",\n  \"pickupTime\": \"2025-04-28T15:30:00\",\n  \"notes\": \"Please keep it warm and fresh\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/orders",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "orders"]
+            }
+          }
+        },
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/orders",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "orders"]
+            }
+          }
+        },
+        {
+          "name": "Get Order By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/orders/ORD-1715349600000",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "orders", "ORD-1715349600000"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment",
+      "item": [
+        {
+          "name": "Initiate Full Payment",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"ORD-1715349600000\",\n  \"amount\": 400,\n  \"method\": \"card\",\n  \"isPartial\": false,\n  \"partialAmount\": 0\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/payment/initiate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "payment", "initiate"]
+            }
+          }
+        },
+        {
+          "name": "Initiate Partial Payment",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"ORD-1715349600000\",\n  \"amount\": 400,\n  \"method\": \"upi\",\n  \"isPartial\": true,\n  \"partialAmount\": 200\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/payment/initiate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "payment", "initiate"]
+            }
+          }
+        },
+        {
+          "name": "Verify Payment",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentId\": \"PAY-1715349600000\",\n  \"orderId\": \"ORD-1715349600000\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/payment/verify",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "payment", "verify"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Geo",
+      "item": [
+        {
+          "name": "Get Bakery Location",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/bakery/location",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "bakery", "location"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

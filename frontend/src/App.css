@@ -1,0 +1,91 @@
+/* ── CSS VARIABLES ── */
+:root {
+  --cream: #faf6ef;
+  --warm-white: #fffdf9;
+  --brown: #3b2412;
+  --caramel: #c2813a;
+  --gold: #e8a94b;
+  --rust: #a8452a;
+  --sage: #7a8c6e;
+  --text: #2c1a0e;
+  --text-light: #7a5c44;
+  --border: #e0d0be;
+  --card-bg: #fff9f2;
+  --shadow: 0 4px 24px rgba(59,36,18,0.10);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── SHARED BUTTON ── */
+.btn {
+  padding: 0.7rem 1.8rem;
+  border-radius: 2px;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-primary { background: var(--gold); color: var(--brown); }
+.btn-primary:hover { background: var(--caramel); transform: translateY(-1px); }
+.btn-outline { background: transparent; color: var(--gold); border: 1.5px solid var(--gold); }
+.btn-outline:hover { background: var(--gold); color: var(--brown); }
+
+/* ── SECTION ── */
+.section { padding: 3.5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem; font-weight: 700; color: var(--brown);
+  margin-bottom: 0.3rem;
+}
+.section-sub { color: var(--text-light); font-size: 0.92rem; margin-bottom: 2rem; }
+.divider {
+  height: 2px; width: 48px;
+  background: linear-gradient(90deg, var(--caramel), var(--gold));
+  margin: 0.5rem 0 1.5rem;
+  border: none;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+  background: var(--brown); color: var(--gold);
+  padding: 0.8rem 1.4rem; border-radius: 3px;
+  font-size: 0.88rem; font-weight: 500;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.22);
+  transform: translateY(100px); opacity: 0;
+  transition: all .35s cubic-bezier(.34,1.56,.64,1);
+  pointer-events: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ── MODAL OVERLAY ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 200; align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--warm-white); border-radius: 6px; padding: 2.5rem;
+  max-width: 460px; width: 90%;
+  animation: popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn { from{transform:scale(.7);opacity:0} to{transform:scale(1);opacity:1} }
+
+.hidden { display: none !important; }
+.badge { background: var(--sage); color:#fff; font-size:0.7rem; padding:2px 7px; border-radius:20px; font-weight:500; }
+.tag-new { background: var(--rust); }
+.tag-sale { background: #c0392b; }
