@@ -1,8 +1,28 @@
 // routes/orders.js - Order management API endpoints
 import express from 'express';
 import Order from '../models/Order.js';
+import { sendOrderConfirmationEmail } from '../utils/mailer.js';
 
 const router = express.Router();
+
+/**
+ * GET /api/orders
+ * List all orders (admin)
+ * 
+ * POSTMAN TEST:
+ * GET http://localhost:5000/api/orders?status=pending
+ * GET http://localhost:5000/api/orders
+ */
+router.get('/', async (req, res) => {
+  try {
+    const { status } = req.query;
+    const filter = status ? { status } : {};
+    const orders = await Order.find(filter).sort({ createdAt: -1 });
+    res.json({ success: true, orders, count: orders.length });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 /**
  * POST /api/orders
@@ -44,10 +64,28 @@ router.post('/', async (req, res) => {
       pickupTime,
       notes,
       totalAmount,
-      status: 'pending',
+      status: 'confirmed',
     });
     
     await order.save();
+
+    // ── SEND CONFIRMATION EMAIL IMMEDIATELY ──────────────────
+    if (customer.email) {
+      try {
+        await sendOrderConfirmationEmail(
+          customer.email,
+          customer.name || 'Valued Customer',
+          orderId,
+          items,
+          totalAmount,
+          orderType
+        );
+        console.log(`✓ Confirmation email sent for order ${orderId} (${orderType})`);
+      } catch (emailErr) {
+        console.error(`✗ Failed to send confirmation email for ${orderId}:`, emailErr.message);
+      }
+    }
+
     res.status(201).json({
       success: true,
       orderId,
@@ -99,25 +137,6 @@ router.patch('/:id', async (req, res) => {
       { new: true }
     );
     res.json({ success: true, order, message: `Order status updated to ${status}` });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-/**
- * GET /api/orders
- * List all orders (admin)
- * 
- * POSTMAN TEST:
- * GET http://localhost:5000/api/orders?status=pending
- * GET http://localhost:5000/api/orders
- */
-router.get('/', async (req, res) => {
-  try {
-    const { status } = req.query;
-    const filter = status ? { status } : {};
-    const orders = await Order.find(filter).sort({ createdAt: -1 });
-    res.json({ success: true, orders, count: orders.length });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

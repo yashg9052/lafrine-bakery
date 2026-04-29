@@ -8,6 +8,7 @@ import saleRoutes from './routes/sale.js';
 import orderRoutes from './routes/orders.js';
 import paymentRoutes from './routes/payment.js';
 import geoRoutes from './routes/geo.js';
+import emailRoutes from './routes/email.js';
 
 dotenv.config();
 
@@ -29,8 +30,7 @@ app.use('/api/menu', menuRoutes);
 app.use('/api/sale', saleRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/payment', paymentRoutes);
-app.use('/api/bakery', geoRoutes);
-
+app.use('/api/bakery', geoRoutes);app.use('/api/email', emailRoutes);
 // ── HEALTH CHECK ──────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });

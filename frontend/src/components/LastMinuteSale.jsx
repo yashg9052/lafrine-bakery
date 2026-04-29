@@ -1,11 +1,12 @@
 // src/components/LastMinuteSale.jsx
 import { useState, useEffect } from 'react';
-import { getSaleItems } from '../services/api';
+
+const TWO_HOURS = 2 * 60 * 60 * 1000; // 2 hours in ms
 
 const STATIC_SALE = [
-  { _id:'s1', name:'Opera Cake (Whole)',  originalPrice:560, salePrice:280, image:'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80', expiresAt: Date.now() + 3600000 },
-  { _id:'s2', name:'Sourdough Loaf',      originalPrice:280, salePrice:140, image:'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=400&q=80', expiresAt: Date.now() + 5400000 },
-  { _id:'s3', name:'Carrot Cake Slice',   originalPrice:480, salePrice:200, image:'https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=400&q=80', expiresAt: Date.now() + 1800000 },
+  { _id:'s1', name:'Opera Cake (Whole)',  originalPrice:560, salePrice:280, image:'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80', expiresAt: Date.now() + TWO_HOURS },
+  { _id:'s2', name:'Sourdough Loaf',      originalPrice:280, salePrice:140, image:'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=400&q=80', expiresAt: Date.now() + TWO_HOURS },
+  { _id:'s3', name:'Carrot Cake Slice',   originalPrice:480, salePrice:200, image:'https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=400&q=80', expiresAt: Date.now() + TWO_HOURS },
 ];
 
 function Countdown({ expiresAt }) {
@@ -38,7 +39,6 @@ const st = {
   },
   bannerText: { color:'#fff', fontFamily:"'Playfair Display', serif", fontSize:'1.3rem', fontWeight:700 },
   bannerSub: { color:'rgba(255,255,255,0.85)', fontSize:'0.85rem', marginTop:'2px' },
-  grid: { display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(260px, 1fr))', gap:'1.5rem' },
   card: {
     background:'#fff9f2', border:'1.5px solid #f0c0b0',
     borderRadius:'4px', overflow:'hidden',
@@ -57,7 +57,7 @@ const st = {
   priceRow: { display:'flex', alignItems:'center', gap:'0.6rem' },
   original: { color:'#999', fontSize:'0.85rem', textDecoration:'line-through' },
   sale: { color:'#c0392b', fontFamily:"'Playfair Display', serif", fontSize:'1.15rem', fontWeight:700 },
-  footer: { display:'flex', alignItems:'center', justifyContent:'space-between', marginTop:'0.8rem' },
+  footer: { display:'flex', alignItems:'center', justifyContent:'space-between', marginTop:'0.8rem', flexWrap:'wrap', gap:'0.5rem' },
   grabBtn: {
     background:'#a8452a', color:'#fff', border:'none',
     padding:'0.4rem 1rem', borderRadius:'2px', fontSize:'0.8rem',
@@ -68,32 +68,8 @@ const st = {
 };
 
 export default function LastMinuteSale({ onAddToCart }) {
-  const [items, setItems]     = useState(STATIC_SALE);
-  const [loading, setLoading] = useState(false);
-
-  // Initial fetch
-  useEffect(() => {
-    getSaleItems()
-      .then(res => {
-        const data = res.data.items || res.data;
-        setItems(Array.isArray(data) ? data : STATIC_SALE);
-      })
-      .catch(() => setItems(STATIC_SALE))
-      .finally(() => setLoading(false)); // ← only setState inside callback, not sync
-  }, []);
-
-  // Auto-refresh every 2 min (silent, no loading state)
-  useEffect(() => {
-    const t = setInterval(() => {
-      getSaleItems()
-        .then(res => {
-          const data = res.data.items || res.data;
-          setItems(Array.isArray(data) ? data : STATIC_SALE);
-        })
-        .catch(() => {});
-    }, 120000);
-    return () => clearInterval(t);
-  }, []);
+  // ✅ No backend fetch — static items with 2-hour expiry set at component mount
+  const [items] = useState(STATIC_SALE);
 
   return (
     <div id="sale" style={st.section}>
@@ -109,11 +85,10 @@ export default function LastMinuteSale({ onAddToCart }) {
           </div>
         </div>
 
-        {loading && <p style={st.empty}>Loading sale items...</p>}
-        {!loading && items.length === 0 && <p style={st.empty}>No sale items right now. Check back soon!</p>}
+        {items.length === 0 && <p style={st.empty}>No sale items right now. Check back soon!</p>}
 
-        <div style={st.grid}>
-          {!loading && items.map(item => (
+        <div className="sale-grid">
+          {items.map(item => (
             <div key={item._id} style={st.card}>
               <div style={st.imgWrap}>
                 <img src={item.image} alt={item.name} style={st.img} loading="lazy" />
@@ -144,6 +119,27 @@ export default function LastMinuteSale({ onAddToCart }) {
             </div>
           ))}
         </div>
+
+        {/* Responsive grid styles */}
+        <style>{`
+          .sale-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+          }
+          @media (max-width: 768px) {
+            .sale-grid {
+              grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+              gap: 1rem;
+            }
+          }
+          @media (max-width: 480px) {
+            .sale-grid {
+              grid-template-columns: 1fr;
+              gap: 1rem;
+            }
+          }
+        `}</style>
       </div>
     </div>
   );

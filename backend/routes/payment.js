@@ -2,6 +2,7 @@
 import express from 'express';
 import Payment from '../models/Payment.js';
 import Order from '../models/Order.js';
+import { sendPaymentConfirmationEmail } from '../utils/mailer.js';
 
 const router = express.Router();
 
@@ -103,6 +104,24 @@ router.post('/verify', async (req, res) => {
       },
       { new: true }
     );
+    
+    // ── SEND PAYMENT CONFIRMATION EMAIL IMMEDIATELY ──────────────────
+    if (order && order.customer && order.customer.email) {
+      try {
+        await sendPaymentConfirmationEmail(
+          order.customer.email,
+          order.customer.name || 'Valued Customer',
+          orderId,
+          paymentId,
+          payment.isPartial ? payment.partialAmount : payment.amount,
+          payment.method,
+          payment.isPartial
+        );
+        console.log(`✓ Payment confirmation email sent for order ${orderId}`);
+      } catch (emailErr) {
+        console.error(`✗ Failed to send payment confirmation email for ${orderId}:`, emailErr.message);
+      }
+    }
     
     res.json({
       success: true,

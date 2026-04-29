@@ -8,8 +8,9 @@ dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/la-farine';
 
-// Sample menu items
+// 12 Menu Items (3 bread, 3 pastry, 3 cake, 3 drink)
 const MENU_DATA = [
+  // ── BREADS ──
   {
     name: 'Sourdough Loaf',
     cat: 'bread',
@@ -34,6 +35,7 @@ const MENU_DATA = [
     desc: 'Sea salt, rosemary, roasted garlic. Italian perfection.',
     image: 'https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=400&q=80',
   },
+  // ── PASTRIES ──
   {
     name: 'Butter Croissant',
     cat: 'pastry',
@@ -58,6 +60,7 @@ const MENU_DATA = [
     desc: 'Dark chocolate batons wrapped in buttery pastry.',
     image: 'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=400&q=80',
   },
+  // ── CAKES ──
   {
     name: 'Carrot Cake',
     cat: 'cake',
@@ -82,6 +85,7 @@ const MENU_DATA = [
     desc: 'Coffee buttercream, ganache, almond joconde layers.',
     image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80',
   },
+  // ── DRINKS ──
   {
     name: 'Cafe Latte',
     cat: 'drink',
@@ -98,16 +102,24 @@ const MENU_DATA = [
     desc: 'Cold-pressed, pulpy, pure Valencia orange juice.',
     image: 'https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?w=400&q=80',
   },
+  {
+    name: 'Hot Chocolate',
+    cat: 'drink',
+    price: 160,
+    tag: 'new',
+    desc: 'Rich Belgian cocoa, steamed milk, whipped cream & marshmallows.',
+    image: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=400&q=80',
+  },
 ];
 
-// Sample sale items
+// 3 Sale Items (cancelled orders at discounted prices)
 const SALE_DATA = [
   {
     name: 'Opera Cake (Whole)',
     originalPrice: 560,
     salePrice: 280,
     image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80',
-    expiresAt: new Date(Date.now() + 3600000), // 1 hour
+    expiresAt: new Date(Date.now() + 3600000), // 1 hour from now
     quantity: 1,
     reason: 'Cancelled order - Flash sale!',
   },
@@ -116,18 +128,18 @@ const SALE_DATA = [
     originalPrice: 280,
     salePrice: 140,
     image: 'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=400&q=80',
-    expiresAt: new Date(Date.now() + 5400000), // 1.5 hours
+    expiresAt: new Date(Date.now() + 5400000), // 1.5 hours from now
     quantity: 2,
     reason: 'Cancelled order - Flash sale!',
   },
   {
-    name: 'Carrot Cake Slice',
-    originalPrice: 480,
-    salePrice: 200,
-    image: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=400&q=80',
-    expiresAt: new Date(Date.now() + 1800000), // 30 min
-    quantity: 3,
-    reason: 'Cancelled order - Flash sale!',
+    name: 'Butter Croissant Box (6 pcs)',
+    originalPrice: 720,
+    salePrice: 360,
+    image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=80',
+    expiresAt: new Date(Date.now() + 7200000), // 2 hours from now
+    quantity: 1,
+    reason: 'Cancelled bulk order - 50% off!',
   },
 ];
 

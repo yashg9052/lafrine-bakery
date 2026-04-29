@@ -42,12 +42,6 @@ const s = {
     fontSize:'0.83rem', fontWeight:500, letterSpacing:'0.5px',
     textTransform:'uppercase', cursor:'pointer', borderRadius:'2px', transition:'all .2s',
   }),
-  grid: {
-    display:'grid',
-    gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))',
-    gap:'1.5rem',
-    width: '100%',
-  },
   card: {
     background:'#fff9f2', border:'1px solid #e0d0be',
     borderRadius:'4px', overflow:'hidden',
@@ -109,7 +103,7 @@ export default function Menu({ onAddToCart }) {
         ))}
       </div>
 
-      <div style={s.grid}>
+      <div className="menu-grid">
         {(loading || items.length === 0) && <p style={s.loading}>Loading menu...</p>}
         {!loading && items.map(item => (
           <div
@@ -142,6 +136,33 @@ export default function Menu({ onAddToCart }) {
           </div>
         ))}
       </div>
+
+      {/* Responsive grid styles */}
+      <style>{`
+        .menu-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 1.5rem;
+          width: 100%;
+        }
+        @media (max-width: 768px) {
+          .menu-grid {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .menu-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+          }
+        }
+        @media (max-width: 360px) {
+          .menu-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
     </section>
   );
 }

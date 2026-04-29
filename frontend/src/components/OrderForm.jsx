@@ -3,58 +3,6 @@ import { useState } from 'react';
 import { placeOrder } from '../services/api';
 import PaymentModal from './PaymentModal';
 
-const s = {
-  wrap: { background: '#fffdf9', borderTop: '1px solid #e0d0be' },
-  inner: {
-    maxWidth: '1100px',
-    margin: '0 auto',
-    padding: '3rem 1.5rem',
-    display: 'grid',
-    gridTemplateColumns: '1fr 360px',
-    gap: '2.5rem',
-  },
-  formGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.3rem',
-    marginBottom: '0.8rem',
-  },
-  formRow: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '1rem',
-  },
-  label: {
-    fontSize: '0.78rem',
-    fontWeight: 500,
-    letterSpacing: '0.5px',
-    textTransform: 'uppercase',
-    color: '#7a5c44',
-  },
-  input: {
-    padding: '0.6rem 0.85rem',
-    border: '1.5px solid #e0d0be',
-    borderRadius: '3px',
-    background: '#fff',
-    color: '#2c1a0e',
-    fontSize: '0.92rem',
-    outline: 'none',
-    width: '100%',
-  },
-  submitBtn: {
-    width: '100%',
-    background: '#c2813a',
-    color: '#fff',
-    border: 'none',
-    padding: '0.85rem',
-    borderRadius: '3px',
-    fontSize: '0.92rem',
-    fontWeight: 500,
-    cursor: 'pointer',
-    marginTop: '0.5rem',
-  },
-};
-
 export default function OrderForm({
   cart,
   onRemoveItem,
@@ -165,8 +113,8 @@ export default function OrderForm({
 
   return (
     <>
-      <div id="order" style={s.wrap}>
-        <div style={s.inner}>
+      <div id="order" className="order-section">
+        <div className="order-inner">
           {/* FORM */}
 
           <div>
@@ -174,7 +122,7 @@ export default function OrderForm({
               Place Your Order
             </p>
 
-            <div style={s.formRow}>
+            <div className="order-form-row">
               <div style={s.formGroup}>
                 <label style={s.label}>
                   Your Name
@@ -221,7 +169,7 @@ export default function OrderForm({
               />
             </div>
 
-            <div style={s.formRow}>
+            <div className="order-form-row">
               <div style={s.formGroup}>
                 <label style={s.label}>
                   Order Type
@@ -293,16 +241,7 @@ export default function OrderForm({
 
           {/* CART */}
 
-          <div
-            style={{
-              background: '#fff9f2',
-              border: '1px solid #e0d0be',
-              borderRadius: '4px',
-              padding: '1.5rem',
-              position: 'sticky',
-              top: '80px',
-            }}
-          >
+          <div className="order-cart">
             <h3>
               Your Cart ({cart.length})
             </h3>
@@ -347,6 +286,56 @@ export default function OrderForm({
             </div>
           </div>
         </div>
+
+        {/* Responsive styles */}
+        <style>{`
+          .order-section {
+            background: #fffdf9;
+            border-top: 1px solid #e0d0be;
+          }
+          .order-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 2.5rem;
+          }
+          .order-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+          }
+          .order-cart {
+            background: #fff9f2;
+            border: 1px solid #e0d0be;
+            border-radius: 4px;
+            padding: 1.5rem;
+            position: sticky;
+            top: 80px;
+            align-self: start;
+          }
+          @media (max-width: 768px) {
+            .order-inner {
+              grid-template-columns: 1fr;
+              padding: 2rem 1rem;
+              gap: 1.5rem;
+            }
+            .order-cart {
+              position: static;
+              order: -1;
+            }
+          }
+          @media (max-width: 600px) {
+            .order-inner {
+              padding: 1.5rem 0.8rem;
+            }
+            .order-form-row {
+              grid-template-columns: 1fr;
+              gap: 0;
+            }
+          }
+        `}</style>
       </div>
 
       {/* TOAST */}
@@ -384,3 +373,44 @@ export default function OrderForm({
     </>
   );
 }
+
+const s = {
+  formGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.3rem',
+    marginBottom: '0.8rem',
+  },
+  label: {
+    fontSize: '0.78rem',
+    fontWeight: 500,
+    letterSpacing: '0.5px',
+    textTransform: 'uppercase',
+    color: '#7a5c44',
+  },
+  input: {
+    padding: '0.6rem 0.85rem',
+    border: '1.5px solid #e0d0be',
+    borderRadius: '3px',
+    background: '#fff',
+    color: '#2c1a0e',
+    fontSize: '0.92rem',
+    outline: 'none',
+    width: '100%',
+    boxSizing: 'border-box',
+    fontFamily: "'DM Sans', sans-serif",
+  },
+  submitBtn: {
+    width: '100%',
+    background: '#c2813a',
+    color: '#fff',
+    border: 'none',
+    padding: '0.85rem',
+    borderRadius: '3px',
+    fontSize: '0.92rem',
+    fontWeight: 500,
+    cursor: 'pointer',
+    marginTop: '0.5rem',
+    fontFamily: "'DM Sans', sans-serif",
+  },
+};

@@ -14,7 +14,6 @@ function haversine(lat1, lng1, lat2, lng2) {
 const s = {
   wrap: { background:'#faf6ef', borderTop:'1px solid #e0d0be' },
   inner: { maxWidth:'1100px', margin:'0 auto', padding:'3rem 1.5rem' },
-  grid: { display:'grid', gridTemplateColumns:'1fr 1fr', gap:'2rem', alignItems:'start', marginTop:'1rem' },
   card: { background:'#fff9f2', border:'1px solid #e0d0be', borderRadius:'4px', padding:'1.5rem' },
   mapPlaceholder: {
     width:'100%', height:'240px',
@@ -42,7 +41,7 @@ const s = {
     borderRadius:'3px', fontSize:'0.85rem', marginBottom:'0.4rem',
   },
   rowKey: { color:'#3b2412', minWidth:'80px', fontWeight:600 },
-  rowVal: { color:'#7a5c44' },
+  rowVal: { color:'#7a5c44', wordBreak:'break-word' },
 };
 
 const PIN_STYLE = {
@@ -71,13 +70,33 @@ export default function GeoSection() {
 
   return (
     <div id="find-us" style={s.wrap}>
-      <style>{`@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }`}</style>
+      <style>{`
+        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        .geo-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+          align-items: start;
+          margin-top: 1rem;
+        }
+        @media (max-width: 768px) {
+          .geo-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .geo-grid {
+            gap: 1rem;
+          }
+        }
+      `}</style>
       <div style={s.inner}>
         <p className="section-title">Find Us</p>
         <hr className="divider" />
         <p className="section-sub">Visit us in-store or check how far we are from you.</p>
 
-        <div style={s.grid}>
+        <div className="geo-grid">
           <div style={s.card}>
             <div style={s.mapPlaceholder}>
               <div style={s.mapGrid} />

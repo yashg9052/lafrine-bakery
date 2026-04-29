@@ -4,7 +4,7 @@ import React from 'react';
 const styles = {
   hero: {
     background: 'linear-gradient(135deg, #3b2412 0%, #5c3420 60%, #7a4a2a 100%)',
-    padding: '5rem 2rem 4rem',
+    padding: 'clamp(3rem, 8vw, 5rem) 1.5rem clamp(2.5rem, 6vw, 4rem)',
     textAlign: 'center',
     position: 'relative',
     overflow: 'hidden',
